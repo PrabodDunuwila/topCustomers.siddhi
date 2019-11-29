@@ -1,0 +1,14 @@
+define stream TriggerStream (country string);
+
+@store(type='mongodb', ...)
+@PrimaryKey("purchaseId")
+define table Purchase (purchaseId string, , customerId string, country string, totalAmount float); 
+
+@info(name = 'get_top_5_users') 
+from TriggerStream as T join Purchase as P 
+on P.country == T.country
+select P.customerId as customer, sum(P.totalAmount) as totalAmount 
+group by P.customerId  
+order by totalAmount desc 
+limit 5
+insert into OutputStream;
