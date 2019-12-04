@@ -1,10 +1,14 @@
+@App:name('MongoPerformancetTest')
+
+@App:description('Join streaming data with data stored in a MongoDB collection to perform complex select operations')
+
 define stream TriggerStream (country string);
 
-@store(type='mongodb', ...)
+@store(type = "mongodb" , mongodb.uri="mongodb://localhost/sampleDB")
 @PrimaryKey("purchaseId")
-define table Purchase (purchaseId string, , customerId string, country string, totalAmount float); 
+define table Purchase (purchaseId string, customerId string, country string, totalAmount float); 
 
-@info(name = 'get_top_5_customers') 
+@info(name = 'get_top_5_users') 
 from TriggerStream as T join Purchase as P 
 on P.country == T.country
 select P.customerId as customer, sum(P.totalAmount) as totalAmount 
